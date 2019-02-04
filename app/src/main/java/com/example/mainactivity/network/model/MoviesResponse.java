@@ -17,6 +17,17 @@ import java.util.List;
 
 public class MoviesResponse implements Parcelable {
 
+    public static final Creator<MoviesResponse> CREATOR = new Creator<MoviesResponse>() {
+        @Override
+        public MoviesResponse createFromParcel(Parcel in) {
+            return new MoviesResponse(in);
+        }
+
+        @Override
+        public MoviesResponse[] newArray(int size) {
+            return new MoviesResponse[size];
+        }
+    };
     @SerializedName("page")
     private String page;
     @SerializedName("total_results")
@@ -33,18 +44,6 @@ public class MoviesResponse implements Parcelable {
         moviesList = in.createTypedArrayList(Movie.CREATOR);
     }
 
-    public static final Creator<MoviesResponse> CREATOR = new Creator<MoviesResponse>() {
-        @Override
-        public MoviesResponse createFromParcel(Parcel in) {
-            return new MoviesResponse(in);
-        }
-
-        @Override
-        public MoviesResponse[] newArray(int size) {
-            return new MoviesResponse[size];
-        }
-    };
-
     @Override
     public int describeContents() {
         return 0;
@@ -58,35 +57,8 @@ public class MoviesResponse implements Parcelable {
         dest.writeTypedList(moviesList);
     }
 
-    public String getPage() {
-        return page;
-    }
-
-    public void setPage(String page) {
-        this.page = page;
-    }
-
-    public int getTotalResults() {
-        return totalResults;
-    }
-
-    public void setTotalResults(int totalResults) {
-        this.totalResults = totalResults;
-    }
-
-    public int getTotalPages() {
-        return totalPages;
-    }
-
-    public void setTotalPages(int totalPages) {
-        this.totalPages = totalPages;
-    }
-
     public List<Movie> getMoviesList() {
         return moviesList;
     }
 
-    public void setMoviesList(List<Movie> moviesList) {
-        this.moviesList = moviesList;
-    }
 }

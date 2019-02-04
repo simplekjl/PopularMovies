@@ -15,15 +15,25 @@ public class MoviesDBClient {
 
     public static Retrofit sRetrofit = null;
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
+    public static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
-    public static synchronized Retrofit getInstance(){
-        if(sRetrofit ==null){
+    public MoviesDBClient(){
+        //empty constructor
+    }
+
+    public static Retrofit getInstance(){
+        if(sRetrofit != null){
+            return sRetrofit;
+        }else{
             sRetrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
+            return sRetrofit;
         }
-        return sRetrofit;
     }
 
+    public static <T> T createService(Class<T> serviceClass){
+        return getInstance().create(serviceClass);
+    }
 }

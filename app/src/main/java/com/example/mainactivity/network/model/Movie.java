@@ -26,9 +26,9 @@ public class Movie implements Parcelable {
     @SerializedName("poster_path")
     String posterPath;
     @SerializedName("vote_average")
-    int votesAvg;
+    float votesAvg;
     @SerializedName("popularity")
-    int popularity;
+    float popularity;
     @SerializedName("release_date")
     String releaseDate;
 
@@ -67,8 +67,8 @@ public class Movie implements Parcelable {
         dest.writeString(originalTitle);
         dest.writeString(overview);
         dest.writeString(posterPath);
-        dest.writeInt(votesAvg);
-        dest.writeInt(popularity);
+        dest.writeFloat(votesAvg);
+        dest.writeFloat(popularity);
         dest.writeString(releaseDate);
     }
 
@@ -112,7 +112,7 @@ public class Movie implements Parcelable {
         this.posterPath = posterPath;
     }
 
-    public int getVotesAvg() {
+    public float getVotesAvg() {
         return votesAvg;
     }
 
@@ -120,7 +120,7 @@ public class Movie implements Parcelable {
         this.votesAvg = votesAvg;
     }
 
-    public int getPopularity() {
+    public float getPopularity() {
         return popularity;
     }
 
