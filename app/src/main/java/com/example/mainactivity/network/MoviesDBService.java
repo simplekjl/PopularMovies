@@ -21,6 +21,4 @@ public interface MoviesDBService {
 
     @GET("popular")
     Call<MoviesResponse> getMostPopularMovies(@Query("api_key") String apiKey);
-
-
 }

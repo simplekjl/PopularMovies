@@ -18,13 +18,13 @@ import java.util.List;
 public class MoviesResponse implements Parcelable {
 
     @SerializedName("page")
-    String page;
+    private String page;
     @SerializedName("total_results")
-    int totalResults;
+    private int totalResults;
     @SerializedName("total_pages")
-    int totalPages;
+    private int totalPages;
     @SerializedName("results")
-    List<Movie> moviesList;
+    private List<Movie> moviesList;
 
     protected MoviesResponse(Parcel in) {
         page = in.readString();
@@ -56,5 +56,37 @@ public class MoviesResponse implements Parcelable {
         dest.writeInt(totalResults);
         dest.writeInt(totalPages);
         dest.writeTypedList(moviesList);
+    }
+
+    public String getPage() {
+        return page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
+    }
+
+    public int getTotalResults() {
+        return totalResults;
+    }
+
+    public void setTotalResults(int totalResults) {
+        this.totalResults = totalResults;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
+    }
+
+    public List<Movie> getMoviesList() {
+        return moviesList;
+    }
+
+    public void setMoviesList(List<Movie> moviesList) {
+        this.moviesList = moviesList;
     }
 }
