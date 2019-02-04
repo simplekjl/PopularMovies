@@ -2,5 +2,11 @@
     <string name="app_name">MainActivity</string>
     <string name="most_popular">Most Popular</string>
     <string name="highest_rated">Highest Rated</string>
-
+    <string name="api_key">here my API</string>
+    <string name="error_message">Something went wrong when trying to get the latest movies, Please try again.</string>
+    <string name="div10">10</string>
+    <string name="title_label">Title:</string>
+    <string name="release_date">Release date:</string>
+    <string name="vote_average">Vote average:</string>
+    <string name="synopsis">Synopsis:</string>
 </resources>
