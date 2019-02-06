@@ -8,12 +8,13 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="@dimen/cardview_compat_inset_shadow"
     android:elevation="@dimen/cardview_default_elevation"
     app:cardCornerRadius="@dimen/cardview_default_elevation"
-    app:cardPreventCornerOverlap="true"
-    android:layout_margin="@dimen/cardview_compat_inset_shadow">
+    app:cardPreventCornerOverlap="true">
 
 
     <android.support.constraint.ConstraintLayout
@@ -96,15 +97,17 @@
 
         <TextView
             android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
+            android:ellipsize="end"
             android:maxLines="1"
-            app:autoSizeTextType="uniform"
+            android:minLines="1"
+            app:layout_constraintDimensionRatio="w,"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/title_label"
             app:layout_constraintTop_toTopOf="@+id/guideline2"
@@ -149,7 +152,7 @@
         <TextView
             android:id="@+id/tv_synopsis"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
@@ -178,5 +181,18 @@
             app:layout_constraintTop_toTopOf="@+id/vote_label"
             tools:text="6.8/10" />
 
+        <android.support.design.button.MaterialButton
+            android:id="@+id/showMore"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/show_more"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_synopsis" />
+
     </android.support.constraint.ConstraintLayout>
+
 </android.support.v7.widget.CardView>
