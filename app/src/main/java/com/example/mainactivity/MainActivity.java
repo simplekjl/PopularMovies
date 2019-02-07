@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private MoviesAdapter mMoviesAdapter;
     private TextView mErrorMessageTv;
-    private List<Movie> mMovieList = new ArrayList<>();
+    private List<Movie> mMovieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
