@@ -15,34 +15,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class Movie implements Parcelable {
 
-    @SerializedName("id")
-    int id;
-    @SerializedName("title")
-    String title;
-    @SerializedName("original_title")
-    String originalTitle;
-    @SerializedName("overview")
-    String overview;
-    @SerializedName("poster_path")
-    String posterPath;
-    @SerializedName("vote_average")
-    float votesAvg;
-    @SerializedName("popularity")
-    float popularity;
-    @SerializedName("release_date")
-    String releaseDate;
-
-    protected Movie(Parcel in) {
-        id = in.readInt();
-        title = in.readString();
-        originalTitle = in.readString();
-        overview = in.readString();
-        posterPath = in.readString();
-        votesAvg = in.readInt();
-        popularity = in.readInt();
-        releaseDate = in.readString();
-    }
-
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
         @Override
         public Movie createFromParcel(Parcel in) {
@@ -54,6 +26,33 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
+    @SerializedName("id")
+    int id;
+    @SerializedName("title")
+    private String title;
+    @SerializedName("original_title")
+    private String originalTitle;
+    @SerializedName("overview")
+    private String overview;
+    @SerializedName("poster_path")
+    private String posterPath;
+    @SerializedName("vote_average")
+    private float votesAvg;
+    @SerializedName("popularity")
+    private float popularity;
+    @SerializedName("release_date")
+    private String releaseDate;
+
+    private Movie(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        originalTitle = in.readString();
+        overview = in.readString();
+        posterPath = in.readString();
+        votesAvg = in.readFloat();
+        popularity = in.readFloat();
+        releaseDate = in.readString();
+    }
 
     @Override
     public int describeContents() {
@@ -72,67 +71,25 @@ public class Movie implements Parcelable {
         dest.writeString(releaseDate);
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getOriginalTitle() {
-        return originalTitle;
-    }
-
-    public void setOriginalTitle(String originalTitle) {
-        this.originalTitle = originalTitle;
     }
 
     public String getOverview() {
         return overview;
     }
 
-    public void setOverview(String overview) {
-        this.overview = overview;
-    }
-
     public String getPosterPath() {
         return posterPath;
-    }
-
-    public void setPosterPath(String posterPath) {
-        this.posterPath = posterPath;
     }
 
     public float getVotesAvg() {
         return votesAvg;
     }
 
-    public void setVotesAvg(int votesAvg) {
-        this.votesAvg = votesAvg;
-    }
-
-    public float getPopularity() {
-        return popularity;
-    }
-
-    public void setPopularity(int popularity) {
-        this.popularity = popularity;
-    }
-
     public String getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
-    }
 }

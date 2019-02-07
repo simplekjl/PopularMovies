@@ -8,14 +8,13 @@
 
 package com.example.mainactivity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
+import android.os.Parcelable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -24,9 +23,11 @@ import android.widget.TextView;
 import com.example.mainactivity.adapters.MoviesAdapter;
 import com.example.mainactivity.network.MoviesDBClient;
 import com.example.mainactivity.network.MoviesDBService;
+import com.example.mainactivity.network.model.Movie;
 import com.example.mainactivity.network.model.MoviesResponse;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,24 +36,31 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static String MOVIE_OBJECT = "movie";
+    private static String TAG = MainActivity.class.getCanonicalName();
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
     private MoviesAdapter mMoviesAdapter;
-    private TextView mErrorMessage;
-    private static String TAG = MainActivity.class.getCanonicalName();
+    private TextView mErrorMessageTv;
+    private List<Movie> mMovieList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bindViews();
-        getMostPopularMovies();
+        if (mMovieList != null) {
+            mMoviesAdapter = new MoviesAdapter(mMovieList);
+            showResults();
+        } else {
+            getMostPopularMovies();
+        }
     }
 
     private void bindViews() {
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
-        mErrorMessage = (TextView) findViewById(R.id.error_message);
+        mProgressBar = findViewById(R.id.progressBar);
+        mRecyclerView = findViewById(R.id.rv_movies);
+        mErrorMessageTv = findViewById(R.id.error_message);
     }
 
     @Override
@@ -88,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
                     if (response.body() != null) {
                         MoviesResponse moviesResponse = response.body();
                         if (moviesResponse.getMoviesList() != null) {
-                            mMoviesAdapter = new MoviesAdapter(moviesResponse.getMoviesList());
+                            mMovieList = moviesResponse.getMoviesList();
+                            mMoviesAdapter = new MoviesAdapter(mMovieList);
                             showResults();
                         }
                     }
@@ -98,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<MoviesResponse> call, Throwable t) {
                 showErrorMessage();
-                Log.e(TAG, "onFailure: "+ t.getMessage() );
+                Log.e(TAG, "onFailure: " + t.getMessage());
             }
         });
     }
@@ -110,13 +119,14 @@ public class MainActivity extends AppCompatActivity {
         result.enqueue(new Callback<MoviesResponse>() {
             @Override
             public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
-                if(response.isSuccessful()){
-                if (response.body() != null) {
-                    MoviesResponse moviesResponse = response.body();
-                    if (moviesResponse.getMoviesList() != null) {
-                        mMoviesAdapter = new MoviesAdapter(moviesResponse.getMoviesList());
-                        showResults();
-                    }}
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        MoviesResponse moviesResponse = response.body();
+                        if (moviesResponse.getMoviesList() != null) {
+                            mMoviesAdapter = new MoviesAdapter(moviesResponse.getMoviesList());
+                            showResults();
+                        }
+                    }
                 }
 
             }
@@ -124,24 +134,42 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<MoviesResponse> call, Throwable t) {
                 showErrorMessage();
-                Log.e(TAG, "onFailure: "+t.getMessage());
+                Log.e(TAG, "onFailure: " + t.getMessage());
             }
         });
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mMovieList = savedInstanceState.getParcelableArrayList(MainActivity.MOVIE_OBJECT);
+        }
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (mMovieList != null) {
+            outState.putParcelableArrayList(MainActivity.MOVIE_OBJECT, (ArrayList<? extends Parcelable>) mMovieList);
+        }
+        super.onSaveInstanceState(outState);
+
+    }
+
+
     void showloader() {
         mProgressBar.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
-        mErrorMessage.setVisibility(View.INVISIBLE);
+        mErrorMessageTv.setVisibility(View.INVISIBLE);
     }
 
     //region ShowResults
     void showResults() {
         mProgressBar.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
-        mErrorMessage.setVisibility(View.INVISIBLE);
+        mErrorMessageTv.setVisibility(View.INVISIBLE);
         //setup recyclerView
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mMoviesAdapter);
 
@@ -152,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
     void showErrorMessage() {
         mProgressBar.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
-        mErrorMessage.setVisibility(View.VISIBLE);
+        mErrorMessageTv.setVisibility(View.VISIBLE);
     }
     //endRegion error message
 }

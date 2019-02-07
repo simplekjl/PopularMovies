@@ -9,7 +9,9 @@
 package com.example.mainactivity.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.button.MaterialButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.mainactivity.MainActivity;
+import com.example.mainactivity.MovieDetailsActivity;
 import com.example.mainactivity.R;
 import com.example.mainactivity.network.MoviesDBClient;
 import com.example.mainactivity.network.model.Movie;
@@ -28,6 +32,7 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdapterViewHolder> {
 
     private List<Movie> mMoviesDataSet;
+    private Context mContext;
 
     public MoviesAdapter(List<Movie> data) {
         mMoviesDataSet = data;
@@ -36,10 +41,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
     @NonNull
     @Override
     public MoviesAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        Context context = viewGroup.getContext();
+        mContext = viewGroup.getContext();
         int itemLayout = R.layout.movie_item;
         boolean hastoBeAttachedRightAway = false;
-        View view = LayoutInflater.from(context)
+        View view = LayoutInflater.from(mContext)
                 .inflate(itemLayout, viewGroup, hastoBeAttachedRightAway);
 
         MoviesAdapterViewHolder viewHolder = new MoviesAdapterViewHolder(view);
@@ -66,6 +71,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
         private RatingBar mRatingBar;
         private TextView mRating;
         private TextView mSynopsis;
+        private MaterialButton mShowMoreButon;
 
 
         MoviesAdapterViewHolder(@NonNull View itemView) {
@@ -73,7 +79,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
             bindViews(itemView);
         }
 
-        void setItem(Movie movie) {
+        void setItem(final Movie movie) {
             mTitle.setText(movie.getTitle());
             mReleaseDate.setText(movie.getReleaseDate());
             mRatingBar.setRating(movie.getVotesAvg());
@@ -86,6 +92,15 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
             } else {
                 sb.append(MoviesDBClient.IMAGE_BASE_URL);
             }
+
+            mShowMoreButon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, MovieDetailsActivity.class);
+                    intent.putExtra(MainActivity.MOVIE_OBJECT, movie);
+                    mContext.startActivity(intent);
+                }
+            });
 
             Picasso.get()
                     .load(sb.toString())
@@ -102,7 +117,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
             mRatingBar = view.findViewById(R.id.ratingBar);
             mRating = view.findViewById(R.id.tv_rating);
             mSynopsis = view.findViewById(R.id.tv_synopsis);
-
+            mShowMoreButon = view.findViewById(R.id.showMore);
         }
     }
 }

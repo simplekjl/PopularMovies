@@ -15,7 +15,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface MoviesDBService {
-//https://api.themoviedb.org/3/movie/
+    //https://api.themoviedb.org/3/movie/
     @GET("top_rated")
     Call<MoviesResponse> getHihestRatedMovies(@Query("api_key") String apiKey);
 
